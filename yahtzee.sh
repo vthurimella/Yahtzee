@@ -42,7 +42,7 @@ init(){
   section[13]="Chance "
   score=0
   lower_total=0
-  has_yahtzee=""
+  got_yahtzee=""
   YNUM=12
 }
 
@@ -275,7 +275,7 @@ for ((i=1; i<=13; i++)); do
    else
       clear
       echo "Dice   ------> " ${board[@]}
-      if [[ -n got_yahtzee && "has_n 5" ]]; then
+      if [ -n got_yahtzee ] && has_n 5 ; then
         echo "Yahtzee Bonus"
         score=$(($score + 100))
       fi
