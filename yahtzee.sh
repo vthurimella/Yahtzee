@@ -87,6 +87,9 @@ pick_section(){
     if [[ 1 -le $1 && $1 -le 6 ]]; then
       lower_score=$(($lower_score + $temp))
     fi
+    if [[ $temp -eq 50 ]]; then
+      got_yahtzee="true"
+    fi
     section[$1]="$(echo ${section[$1]} | cut -d "-" -f1) X"
     return 1
   fi
@@ -220,7 +223,6 @@ compute_score(){
         ;;
     12) if has_n 5; then
          echo 50
-         got_yahtzee=1
        else
          echo 0
        fi
@@ -275,7 +277,7 @@ for ((i=1; i<=13; i++)); do
    else
       clear
       echo "Dice   ------> " ${board[@]}
-      if [ -n got_yahtzee ] && has_n 5 ; then
+      if [[ -n $got_yahtzee ]] && has_n 5 ; then
         echo "Yahtzee Bonus"
         score=$(($score + 100))
       fi
