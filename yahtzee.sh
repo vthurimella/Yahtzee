@@ -67,13 +67,23 @@ count_numbers(){
   echo $count
 }
 
+is_integer() {
+  printf "%d" $1 > /dev/null 2>&1
+  return $?
+}
+
 pick_section(){
+  if ! is_integer $1; then
+    read -p "Pick which Section: " s
+    pick_section $s
+    return $?
+  fi
   if [ $(echo -n $1 | wc -c) -eq 0 ]; then
     read -p "Pick which Section: " s
     pick_section $s
     return $?
   fi
-  if ! echo {0..13} | xargs -n1 | grep $1 >> /dev/null; then
+  if [[ $1 -le 0 || $1 -gt 13 ]]; then
     read -p "Pick which Section: " s
     pick_section $s
     return $?
@@ -300,6 +310,7 @@ if [[ 63 -le $lower_score ]]; then
   score=$(($score + 35))
 fi
 
+echo "Score: $score"
 read -p "Enter first name: " name
 while [ -z "$name" ]; do
   read -p "Enter first name: " name
